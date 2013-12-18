@@ -1145,11 +1145,22 @@ void process_commands()
       saved_feedrate = feedrate;
       saved_feedmultiply = feedmultiply;
       feedmultiply = 100;
-
-      deploy_z_probe();
-      calibrate_print_surface(z_probe_offset[Z_AXIS] +
-	(code_seen(axis_codes[Z_AXIS]) ? code_value() : 0.0));
-      retract_z_probe();
+//arn
+      //deploy_z_probe();
+      
+      feedrate = homing_feedrate[X_AXIS];
+      destination[X_AXIS] = 0;
+      destination[Y_AXIS] = 0;
+      destination[Z_AXIS] = 30;
+      prepare_move_raw();
+      
+      calibrate_print_surface(z_probe_offset[Z_AXIS] + (code_seen(axis_codes[Z_AXIS]) ? code_value() : 0.0));
+      //retract_z_probe();
+      feedrate = homing_feedrate[X_AXIS];
+      destination[X_AXIS] = 0;
+      destination[Y_AXIS] = 0;
+      destination[Z_AXIS] = 100;
+      prepare_move_raw();
 
       feedrate = saved_feedrate;
       feedmultiply = saved_feedmultiply;
